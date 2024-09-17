@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.2.2/maptiler-sdk.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.2.2/maptiler-sdk.css" rel="stylesheet" />
+    <script src="https://cdn.maptiler.com/maptiler-weather/v2.0.0/maptiler-weather.umd.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            box-sizing: border-box;
+            /* Ensure proper box-sizing */
+        }
+
+        .navbar {
+            height: 100px;
+            background-color: #00307d;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            /* Prevent overflow */
+        }
+
+        .navbar-title {
+            font-size: 30px;
+        }
+
+        .navbar-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar-links li {
+            margin-left: 20px;
+        }
+
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar-links li a:hover {
+            font-weight: bold;
+            color: rgb(0, 179, 255);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: row;
+            height: calc(100vh - 100px);
+            /* Adjust for fixed navbar */
+            margin-top: 120px;
+            /* Adjust for fixed navbar */
+        }
+
+        .map-container {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+            /* Ensure proper box-sizing */
+            position: relative;
+            /* Ensure child elements are positioned relative to this container */
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        #variable-name,
+        #pointer-data {
+            position: absolute;
+            z-index: 10;
+            /* Ensure these elements are on top of the map */
+        }
+
+        #variable-name {
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        #pointer-data {
+            bottom: 50px;
+            left: 10px;
+            font-size: 20px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0px 0px 10px #0007;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 3px;
+        }
+
+        .tiles-container {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .tile-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tile {
+            text-transform: uppercase;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+            background-color: #1E90FF;
+            width: 200px;
+            /* Fixed width for tiles */
+        }
+
+        .tile:hover {
+            background-color: #0064c8;
+        }
+
+        .tile-row h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #time-info {
+            position: absolute;
+            bottom: 10px;
+            width: calc(100% - 20px);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            z-index: 1;
+            border-radius: 3px;
+        }
+
+        #time-slider {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .button {
+            cursor: pointer;
+            width: auto;
+            padding: 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            text-align: center;
+            color: #fff;
+            background: #3174ff;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-title">ResQSync</div>
+        <ul class="navbar-links">
+            <li><a href="#" onclick="showProblems()">Home</a></li>
+            <li><a href="/weather">Live Map</a></li>
+            <li><a href="/latest_news">Latest News</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <!-- Map Section -->
+        <div class="map-container">
+            <div id="map">
+                <div id="variable-name">Wind</div>
+                <div id="pointer-data">-</div>
+                <div id="time-info">
+                    <span id="time-text"></span>
+                    <button id="play-pause-bt" class="button">Play 3600x</button>
+                    <input type="range" id="time-slider" min="0" max="11" step="1">
+                </div>
+            </div>
+        </div>
+
+        <div class="tiles-container">
+            <div id="problems">
+                <h1>Current Disaster Updates</h1>
+                <div class="tile-row">
+                    {% for disaster in data %}
+                    <div class="tile" onclick="placeDetails('{{disaster}}')">{{disaster}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div id="cities" style="display:none;">
+                <h1 id="selected-problem"></h1>
+                <div class="tile-row">
+                    <div class="tile city-tile" data-city="chennai" style="background-color: #4682B4;">Chennai</div>
+                    <div class="tile city-tile" data-city="thirunelveli" style="background-color: #4682B4;">Thirunelveli
+                    </div>
+                </div>
+            </div>
+
+            <div id="report" style="display:none;">
+                <h1 id="selected-city"></h1>
+                <div id="report-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function placeDetails(disaster) {
+            console.log("called with ", disaster);
+            window.location.href = `/places?disaster_name=${disaster}`;
+        }
+
+        maptilersdk.config.apiKey = 'TZIhLipSeWXsq4veY5OI';
+        const map = (window.map = new maptilersdk.Map({
+            container: 'map',
+            style: maptilersdk.MapStyle.BACKDROP,
+            zoom: 3.5,
+            center: [80, 20] // Center over India
+        }));
+
+        const timeInfoContainer = document.getElementById("time-info");
+        const timeTextDiv = document.getElementById("time-text");
+        const timeSlider = document.getElementById("time-slider");
+        const playPauseButton = document.getElementById("play-pause-bt");
+        const pointerDataDiv = document.getElementById("pointer-data");
+        let pointerLngLat = null;
+
+        const weatherLayer = new maptilerweather.WindLayer();
+
+        map.on('load', function () {
+            map.setPaintProperty("Water", 'fill-color', "rgba(0, 0, 0, 0.4)");
+            map.addLayer(weatherLayer, 'Water');
+        });
+
+        timeSlider.addEventListener("input", (evt) => {
+            weatherLayer.setAnimationTime(parseInt(timeSlider.value / 1000))
+        });
+
+        weatherLayer.on("sourceReady", event => {
+            const startDate = weatherLayer.getAnimationStartDate();
+            const endDate = weatherLayer.getAnimationEndDate();
+            const currentDate = weatherLayer.getAnimationTimeDate();
+            refreshTime()
+
+            timeSlider.min = +startDate;
+            timeSlider.max = +endDate;
+            timeSlider.value = +currentDate;
+        });
+
+        weatherLayer.on("tick", event => {
+            refreshTime();
+            updatePointerValue(pointerLngLat);
+        });
+
+        weatherLayer.on("animationTimeSet", event => {
+            refreshTime()
+        });
+
+        let isPlaying = false;
+        playPauseButton.addEventListener("click", () => {
+            if (isPlaying) {
+                weatherLayer.animateByFactor(0);
+                playPauseButton.innerText = "Play 3600x";
+            } else {
+                weatherLayer.animateByFactor(3600);
+                playPauseButton.innerText = "Pause";
+            }
+
+            isPlaying = !isPlaying;
+        });
+
+        function refreshTime() {
+            const d = weatherLayer.getAnimationTimeDate();
+            timeTextDiv.innerText = d.toString();
+            timeSlider.value = +d;
+        }
+
+        map.on('mouseout', function (evt) {
+            if (!evt.originalEvent.relatedTarget) {
+                pointerDataDiv.innerText = "";
+                pointerLngLat = null;
+            }
+        });
+
+        function updatePointerValue(lngLat) {
+            if (!lngLat) return;
+            pointerLngLat = lngLat;
+            const value = weatherLayer.pickAt(lngLat.lng, lngLat.lat);
+            if (!value) {
+                pointerDataDiv.innerText = "";
+                return;
+            }
+            pointerDataDiv.innerText = `${value.speedMetersPerSecond.toFixed(1)} m/s`
+        }
+
+        map.on('mousemove', (e) => {
+            updatePointerValue(e.lngLat);
+        });
+    </script>
+</body>
+
+</html>

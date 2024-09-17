@@ -1,0 +1,31 @@
+{
+    "flood": {
+        "sitapur": {
+            "latest_headline": "Flood crisis deepens in UP's Sitapur; Over 25,000 trapped, crops damaged",
+            "people_affected": 25000,
+            "last_updated_date": "2024-09-17",
+            "last_updated_time": "02:24:13",
+            "link": "https://www.indiatoday.in/india/story/uttar-pradesh-sitapur-flooding-rain-alert-water-rescue-operation-farm-destroyed-2600979-2024-09-17?utm_source=rss"
+        }
+    },
+    "cyclone": {
+        "delhi": {
+            "latest_headline": "Heavy rain in Delhi during rush hour, crippling traffic jams",
+            "people_affected": null,
+            "last_updated_date": "2024-09-17",
+            "last_updated_time": "19:47:39",
+            "link": "https://www.indiatoday.in/india/story/delhi-ncr-rain-traffic-jams-imd-weather-forecast-2601505-2024-09-17?utm_source=rss"
+        }
+    },
+    "earthquake": {},
+    "pandemic": {},
+    "virus": {
+        "kerala": {
+            "latest_headline": "Masks mandatory, many schools shut in Kerala's Malappuram amid Nipah outbreak",
+            "people_affected": null,
+            "last_updated_date": "2024-09-16",
+            "last_updated_time": "18:33:50",
+            "link": "https://www.indiatoday.in/india/kerala/story/nipah-virus-outbreak-malappuram-restrictions-schools-shut-masks-mandatory-kerala-2600713-2024-09-16?utm_source=rss"
+        }
+    }
+}

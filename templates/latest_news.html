@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest News</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('/static/assets/newspaper.jpeg');
+            /* Path to your background image */
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            /* Ensure the body takes up the full viewport height */
+
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+
+        .navbar {
+            background-color: #00307d;
+            padding: 10px 20px;
+            color: white;
+            z-index: 2;
+            height: 100px;
+        }
+
+        .navbar-nav {
+            position: absolute;
+            right: 10px;
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+            font-size: 30px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important;
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            font-weight: bold;
+            color: rgb(0, 179, 255) !important;
+        }
+
+        .container {
+            color: black;
+            position: relative;
+            padding: 20px;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid black;
+            border-radius: 5px;
+            z-index: 2;
+        }
+
+        .news-item h2 {
+            margin-top: 0;
+            z-index: 2;
+        }
+
+        .news-item a {
+            z-index: 2;
+            color: #0062ff;
+        }
+
+        .news-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="navbar-brand" href="#">ResQSync</div>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/weather">Live Map</a></li>
+                <li class="nav-item"><a class="nav-link" href="/latest_news">Latest News</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="overlay"></div>
+    <div class="container">
+        <h1>Latest News</h1>
+        {% for disaster_type, news_list in data.items() %}
+        <h2>{{ disaster_type.title() }}</h2>
+        {% for news_item in news_list %}
+        <div class="news-item">
+            <h2>{{ news_item.title }}</h2>
+            <p><strong>Location:</strong> Unknown</p>
+            <p><strong>Date:</strong> {{ news_item.published }}</p>
+            <p><strong>Details:</strong> {{ news_item.content }}</p>
+            <a href="{{ news_item.link }}" target="_blank">Read more</a>
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

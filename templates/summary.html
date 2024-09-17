@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            height: 100px;
+            background-color: #00307d;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .navbar-title {
+            font-size: 30px;
+        }
+
+        .navbar-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .navbar-links li {
+            margin-left: 20px;
+        }
+
+        .navbar-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+
+        .navbar-links li a:hover {
+            font-weight: bold;
+            color: rgb(0, 179, 255);
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .disaster-title {
+            text-transform: uppercase;
+            font-size: 40px;
+            font-weight: 500;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .summary-key {
+            font-weight: bold;
+            color: #00307d;
+            margin-right: 10px;
+        }
+
+        .summary-value {
+            color: #555;
+        }
+
+        .wordcloud-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .wordcloud-container img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navbar-title">ResQSync</div>
+        <ul class="navbar-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/weather">Live Map</a></li>
+            <li><a href="/latest_news">Latest News</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="disaster-title">Summary</div>
+        <div class="summary-row">
+            <div><span class="summary-key">Latest Headline:</span> {{ data["latest_headline"] }}</div>
+            <div><span class="summary-key">People Affected:</span> {{ data["people_affected"] }}</div>
+            <div><span class="summary-key">Last Updated Date:</span> {{ data["last_updated_date"] }}</div>
+            <div><span class="summary-key">Last Updated Time:</span> {{ data["last_updated_time"] }}</div>
+            <div><span class="summary-key">Learn More At:</span> <a href="{{ data[" link"] }}" target="_blank">{{
+                    data["link"] }}</a></div>
+        </div>
+
+        <!-- Word Cloud Section -->
+        <div class="wordcloud-container">
+            <h2>Word Cloud of Article</h2>
+            <img src="{{ wc_path }}" alt="Word Cloud">
+        </div>
+    </div>
+</body>
+
+</html>
